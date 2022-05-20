@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using BusinessLogic;
+using BusinessLogic.RequestModel;
 
 namespace DataAccess.Repositories
 {
     public interface IOrderDetailRepository
     {
-        IEnumerable<OrderDetailObject> GetOrderDetailList();
-        IEnumerable<OrderDetailObject> GetOrderDetailByOrderId(int id);
-        OrderDetailObject GetOrderDetail(int orderId, int productId);
-        void CreateOrderDetail(OrderDetailObject orderDetailObject);
-        void DeleteOrderDetail(OrderDetailObject orderDetailObject);
+        IEnumerable<OrderDetailViewModel> GetOrderDetailList();
+        IEnumerable<OrderDetailViewModel> GetOrderDetailByOrderId(int id);
+        OrderDetailViewModel GetOrderDetail(int orderId, int productId);
+        void CreateOrderDetail(OrderDetailCreateModel createModel);
+        void DeleteOrderDetail(int orderId, int productId);
     }
 }

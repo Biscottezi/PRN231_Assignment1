@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLogic;
+using BusinessLogic.RequestModel;
 using DataAccess.DataAccess;
 using DataAccess.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -37,13 +38,22 @@ namespace eStoreAPI
             });
             var config = new MapperConfiguration(mc =>
             {
-                mc.CreateMap<Member, MemberObject>().ReverseMap();
-                mc.CreateMap<Product, ProductObject>().ReverseMap();
-                mc.CreateMap<Order, OrderObject>().ReverseMap();
-                mc.CreateMap<OrderDetail, OrderDetailObject>().ReverseMap();
-                mc.CreateMap<Category, CategoryObject>().ReverseMap();
+                mc.CreateMap<Member, MemberViewModel>().ReverseMap();
+                mc.CreateMap<MemberCreateModel, Member>().ReverseMap();
+                mc.CreateMap<Product, ProductViewModel>()
+                    .ForMember(des => des.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName))
+                    .ReverseMap();
+                mc.CreateMap<ProductCreateModel, Product>().ReverseMap();
+                mc.CreateMap<Order, OrderViewModel>().ReverseMap();
+                mc.CreateMap<OrderCreateModel, Order>().ReverseMap();
+                mc.CreateMap<OrderDetail, OrderDetailViewModel>()
+                    .ForMember(des => des.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
+                    .ReverseMap();
+                mc.CreateMap<OrderDetailCreateModel, OrderDetail>().ReverseMap();
+                mc.CreateMap<Category, CategoryViewModel>().ReverseMap();
+                mc.CreateMap<ProductViewModel, ProductCreateModel>().ReverseMap();
             });
-            IMapper mapper = config.CreateMapper();
+            var mapper = config.CreateMapper();
             services.AddSingleton(mapper);
             services.AddSingleton(typeof(IMemberRepository), typeof(MemberRepository));
             services.AddSingleton(typeof(IProductRepository), typeof(ProductRepository));
@@ -61,7 +71,7 @@ namespace eStoreAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "eStoreAPI v1"));
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

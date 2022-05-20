@@ -13,3 +13,7 @@ D:\01_Docs\FPT_University\CN8\PRN231\Projects\Asm01_SE151004_NguyenPhamMinhQuan\
 D:\01_Docs\FPT_University\CN8\PRN231\Projects\Asm01_SE151004_NguyenPhamMinhQuan\DataAccess\obj\Debug\net5.0\ref\DataAccess.dll
 D:\01_Docs\FPT_University\CN8\PRN231\Projects\Asm01_SE151004_NguyenPhamMinhQuan\DataAccess\obj\Debug\net5.0\DataAccess.pdb
 D:\01_Docs\FPT_University\CN8\PRN231\Projects\Asm01_SE151004_NguyenPhamMinhQuan\DataAccess\obj\Debug\net5.0\DataAccess.genruntimeconfig.cache
+D:\01_Docs\FPT_University\CN8\PRN231\Projects\Asm01_SE151004_NguyenPhamMinhQuan\DataAccess\bin\Debug\net5.0\appsettings.json
+D:\01_Docs\FPT_University\CN8\PRN231\Projects\Asm01_SE151004_NguyenPhamMinhQuan\DataAccess\bin\Debug\net5.0\BusinessObject.dll
+D:\01_Docs\FPT_University\CN8\PRN231\Projects\Asm01_SE151004_NguyenPhamMinhQuan\DataAccess\bin\Debug\net5.0\BusinessObject.pdb
+D:\01_Docs\FPT_University\CN8\PRN231\Projects\Asm01_SE151004_NguyenPhamMinhQuan\DataAccess\obj\Debug\net5.0\DataAccess.csproj.CopyComplete

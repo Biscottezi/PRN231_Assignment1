@@ -2,24 +2,25 @@
 using System.Collections.Generic;
 using AutoMapper;
 using BusinessLogic;
+using BusinessLogic.RequestModel;
 using DataAccess.DataAccess;
 
 namespace DataAccess.Repositories
 {
-    public class OrderDetailRepository
+    public class OrderDetailRepository : IOrderDetailRepository
     {
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
         public OrderDetailRepository(IMapper mapper)
         {
             _mapper = mapper;
         }
 
-        public IEnumerable<OrderDetailObject> GetOrderDetailList()
+        public IEnumerable<OrderDetailViewModel> GetOrderDetailList()
         {
             try
             {
                 var ods = OrderDetailDAO.Instance.GetOrderDetailList();
-                var orderDetails = _mapper.Map<IEnumerable<OrderDetail>, IEnumerable<OrderDetailObject>>(ods);
+                var orderDetails = _mapper.Map<IEnumerable<OrderDetail>, IEnumerable<OrderDetailViewModel>>(ods);
                 return orderDetails;
             }
             catch(Exception ex)
@@ -28,12 +29,12 @@ namespace DataAccess.Repositories
             }
         }
 
-        public OrderDetailObject GetOrderDetail(int orderId, int productId)
+        public OrderDetailViewModel GetOrderDetail(int orderId, int productId)
         {
             try
             {
                 var od = OrderDetailDAO.Instance.GetOrderDetail(orderId, productId);
-                var orderDetail = _mapper.Map<OrderDetail, OrderDetailObject>(od);
+                var orderDetail = _mapper.Map<OrderDetail, OrderDetailViewModel>(od);
                 return orderDetail;
             }
             catch (Exception ex)
@@ -42,12 +43,12 @@ namespace DataAccess.Repositories
             }
         }
 
-        public IEnumerable<OrderDetailObject> GetOrderDetailByOrderId(int id)
+        public IEnumerable<OrderDetailViewModel> GetOrderDetailByOrderId(int id)
         {
             try
             {
                 var od = OrderDetailDAO.Instance.GetOrderDetailsByOrderId(id);
-                var orderDetail = _mapper.Map<IEnumerable<OrderDetail>, IEnumerable<OrderDetailObject>>(od);
+                var orderDetail = _mapper.Map<IEnumerable<OrderDetail>, IEnumerable<OrderDetailViewModel>>(od);
                 return orderDetail;
             }
             catch (Exception ex)
@@ -56,11 +57,11 @@ namespace DataAccess.Repositories
             }
         }
 
-        public void CreateOrderDetail(OrderDetailObject orderDetailObject)
+        public void CreateOrderDetail(OrderDetailCreateModel createModel)
         {
             try
             {
-                var orderDetail = _mapper.Map<OrderDetailObject, OrderDetail>(orderDetailObject);
+                var orderDetail = _mapper.Map<OrderDetailCreateModel, OrderDetail>(createModel);
                 OrderDetailDAO.Instance.Create(orderDetail);
             }
             catch (Exception ex)
@@ -69,12 +70,11 @@ namespace DataAccess.Repositories
             }
         }
 
-        public void DeleteOrderDetail(OrderDetailObject orderDetailObject)
+        public void DeleteOrderDetail(int orderId, int productId)
         {
             try
             {
-                var orderDetail = _mapper.Map<OrderDetailObject, OrderDetail>(orderDetailObject);
-                OrderDetailDAO.Instance.Delete(orderDetail);
+                OrderDetailDAO.Instance.Delete(orderId, productId);
             }
             catch(Exception ex)
             {

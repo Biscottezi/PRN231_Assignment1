@@ -1,0 +1,76 @@
+﻿<Page x:Class="SalesWPFApp.OrderManagePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SalesWPFApp"
+      mc:Ignorable="d" 
+      d:DesignHeight="535" d:DesignWidth="1000"
+      Title="OrderManagePage">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
+            <Button Name="btnReload"
+                    Margin="10" Width="80"
+                    Content="Reload" Click="btnReload_Click"/>
+            <Button Name="btnDelete"
+                    Margin="10" Width="80"
+                    Content="Delete" Click="btnDelete_Click"/>
+            <Button Name="btnCreate"
+                    Margin="10" Width="80"
+                    Content="Create" Click="btnCreate_Click"/>
+            <DatePicker Name="dp_start" Padding="10"
+                        Margin="350,0,0,0"/>
+            <DatePicker Name="dp_end" Padding="10"
+                        Margin="8 0 0 0" />
+            <Button Name="btn_Sort"
+                    Content="View"
+                    Margin="10"
+                    Click="btn_Sort_Click" Width="80"/>
+        </StackPanel>
+        <ListView Grid.Row="1" Name="lvOrders"
+                  Height="Auto" Width="Auto"
+                  PreviewMouseDoubleClick="lvOrders_PreviewMouseDoubleClick"
+                  PreviewMouseLeftButtonUp="lvOrders_PreviewMouseLeftButtonUp">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Order ID" Width="100"
+                                    DisplayMemberBinding="{Binding Path=OrderId}" />
+                    <GridViewColumn Header="Member ID" Width="100"
+                                    DisplayMemberBinding="{Binding Path=MemberId}" />
+                    <GridViewColumn Header="Order Date" Width="150"
+                                    DisplayMemberBinding="{Binding Path=OrderDate}" />
+                    <GridViewColumn Header="Required Date" Width="150"
+                                    DisplayMemberBinding="{Binding Path=RequiredDate}" />
+                    <GridViewColumn Header="Shipped Date" Width="150"
+                                    DisplayMemberBinding="{Binding Path=ShippedDate}" />
+                    <GridViewColumn Header="Freight" Width="100"
+                                    DisplayMemberBinding="{Binding Path=Freight}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <ListView Grid.Row="2" Name="lvOrderDetails" Margin="0,3,150,0">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Order ID"  Width="100" 
+                                    DisplayMemberBinding="{Binding Path=OrderId}"/>
+                    <GridViewColumn Header="Product ID" Width="100"
+                                    DisplayMemberBinding="{Binding Path=ProductId}"/>
+                    <GridViewColumn Header="Product Name" Width="150"
+                                    DisplayMemberBinding="{Binding Path=Product.ProductName}"/>
+                    <GridViewColumn Header="Unit Price"  Width="100" 
+                                    DisplayMemberBinding="{Binding Path=UnitPrice}"/>
+                    <GridViewColumn Header="Quantity"  Width="100" 
+                                    DisplayMemberBinding="{Binding Path=Quantity}"/>
+                    <GridViewColumn Header="Discount"  Width="100" 
+                                    DisplayMemberBinding="{Binding Path=Discount}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Page>

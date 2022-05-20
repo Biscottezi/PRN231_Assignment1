@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DataAccess.DataAccess;
+using DataAccess.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
@@ -80,7 +81,7 @@ namespace DataAccess
             try
             {
                 var mem = GetMemberById(member.MemberId);
-                if(mem == null)
+                if (mem == null)
                 {
                     var db = new FStoreDBContext();
                     db.Members.Add(member);
@@ -88,10 +89,10 @@ namespace DataAccess
                 }
                 else
                 {
-                    throw new Exception("This member already exists.");
+                    throw new MemberExistException("This member already exists.");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -110,7 +111,7 @@ namespace DataAccess
                 }
                 else
                 {
-                    throw new Exception("This member doesn't exist");
+                    throw new Exception("This member doesn't exist.");
                 }
             }
             catch(Exception ex)
@@ -119,20 +120,20 @@ namespace DataAccess
             }
         }
 
-        public void Delete(Member member)
+        public void Delete(int id)
         {
             try
             {
-                var mem = GetMemberById(member.MemberId);
+                var mem = GetMemberById(id);
                 if (mem != null)
                 {
                     var db = new FStoreDBContext();
-                    db.Members.Remove(member);
+                    db.Members.Remove(mem);
                     db.SaveChanges();
                 }
                 else
                 {
-                    throw new Exception("This member doesn't exist");
+                    throw new Exception("This member doesn't exist.");
                 }
             }
             catch(Exception ex)

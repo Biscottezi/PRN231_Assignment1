@@ -1,0 +1,60 @@
+﻿<Page x:Class="SalesWPFApp.MemberManagePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SalesWPFApp"
+      mc:Ignorable="d" 
+      d:DesignHeight="525" d:DesignWidth="1000"
+      Title="Member Manager">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Left">
+            <Button Name="btnDelete"
+                    Margin="10"
+                    Width="80"
+                    Content="Delete"
+                    Click="btnDelete_Click"/>
+            <Button Name="btnCreate"
+                    Margin="10"
+                    Width="80"
+                    Content="Create"
+                    Click="btnCreate_Click"/>
+        </StackPanel>
+        <ListView Grid.Row="1"
+                  Name="lvMembers"
+                  Height="Auto"
+                  Width="Auto"
+                  PreviewMouseDoubleClick="lvMembers_PreviewMouseDoubleClick"
+                  Grid.RowSpan="2"
+                  Margin="0,34,0,64" SelectionChanged="lvMembers_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID"
+                                    Width="80"
+                                    DisplayMemberBinding="{Binding Path=MemberId}" />
+                    <GridViewColumn Header="Email" Width="150"
+                                    DisplayMemberBinding="{Binding Path=Email}" />
+                    <GridViewColumn Header="Company Name"
+                                    Width="150"
+                                    DisplayMemberBinding="{Binding Path=CompanyName}" />
+                    <GridViewColumn Header="City"
+                                    Width="150"
+                                    DisplayMemberBinding="{Binding Path=City}" />
+                    <GridViewColumn Header="Country"
+                                    Width="150"
+                                    DisplayMemberBinding="{Binding Path=Country}" />
+                    <GridViewColumn Header="Password"
+                                    Width="100"
+                                    DisplayMemberBinding="{Binding Path=Password}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Page>

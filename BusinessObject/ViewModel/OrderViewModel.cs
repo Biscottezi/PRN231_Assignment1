@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace BusinessLogic
 {
-    public class OrderObject
+    public class OrderViewModel
     {
-        public OrderObject()
+        public OrderViewModel()
         {
-            OrderDetails = new HashSet<OrderDetailObject>();
+            OrderDetails = new HashSet<OrderDetailViewModel>();
         }
 
         public int OrderId { get; set; }
@@ -16,8 +16,6 @@ namespace BusinessLogic
         public DateTime? RequiredDate { get; set; }
         public DateTime? ShippedDate { get; set; }
         public decimal? Freight { get; set; }
-
-        public virtual MemberObject Member { get; set; }
-        public virtual ICollection<OrderDetailObject> OrderDetails { get; set; }
+        public virtual ICollection<OrderDetailViewModel> OrderDetails { get; set; }
     }
 }

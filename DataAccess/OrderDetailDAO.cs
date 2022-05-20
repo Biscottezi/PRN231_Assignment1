@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DataAccess.DataAccess;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
 {
@@ -85,7 +86,10 @@ namespace DataAccess
                 }
                 else
                 {
-                    throw new Exception("This detail doesn't exist.");
+                    od.Quantity += orderDetail.Quantity;
+                    var db = new FStoreDBContext();
+                    db.Entry<OrderDetail>(od).State = EntityState.Modified;
+                    db.SaveChanges();
                 }
             }
             catch(Exception ex)
@@ -94,20 +98,20 @@ namespace DataAccess
             }
         }
 
-        public void Delete(OrderDetail orderDetail)
+        public void Delete(int orderId, int productId)
         {
             try
             {
-                var od = GetOrderDetail(orderDetail.OrderId, orderDetail.ProductId);
+                var od = GetOrderDetail(orderId, productId);
                 if(od != null)
                 {
                     var db = new FStoreDBContext();
-                    db.Remove(orderDetail);
+                    db.Remove(od);
                     db.SaveChanges();
                 }
                 else
                 {
-                    throw new Exception("Order Detail does not exist.");
+                    throw new Exception("This detail doesn't exist.");
                 }
             }
             catch(Exception ex)

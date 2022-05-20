@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using AutoMapper;
 using BusinessLogic;
+using BusinessLogic.RequestModel;
 using DataAccess.DataAccess;
 using Microsoft.Extensions.Configuration;
 
 namespace DataAccess.Repositories
 {
-    public class MemberRepository
+    public class MemberRepository : IMemberRepository
     {
         private IMapper mapper;
         public MemberRepository(IMapper mapper)
@@ -16,12 +17,12 @@ namespace DataAccess.Repositories
             this.mapper = mapper;
         }
 
-        public IEnumerable<MemberObject> GetMemberList()
+        public IEnumerable<MemberViewModel> GetMemberList()
         {
             try
             {
                 var members = MemberDAO.Instance.GetMemberList();
-                var memberList = mapper.Map<IEnumerable<Member>, IEnumerable<MemberObject>>(members);
+                var memberList = mapper.Map<IEnumerable<Member>, IEnumerable<MemberViewModel>>(members);
                 return memberList;
             }
             catch(Exception ex)
@@ -30,12 +31,12 @@ namespace DataAccess.Repositories
             }
         }
 
-        public MemberObject GetMemberById(int id)
+        public MemberViewModel GetMemberById(int id)
         {
             try
             {
                 var mem = MemberDAO.Instance.GetMemberById(id);
-                var member = mapper.Map<Member, MemberObject>(mem);
+                var member = mapper.Map<Member, MemberViewModel>(mem);
                 return member;
             }
             catch(Exception ex)
@@ -46,28 +47,21 @@ namespace DataAccess.Repositories
 
         public bool LoginAdmin(String email, String password)
         {
-            IConfiguration config = new ConfigurationBuilder()
-                                        .SetBasePath(Directory.GetCurrentDirectory())
-                                        .AddJsonFile("appsettings.json", true, true)
-                                        .Build();
-            String adminEmail = config["AdminCredential:email"];
-            String adminPassword = config["AdminCredential:password"];
-            if(email == adminEmail && password == adminPassword)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            // IConfiguration config = new ConfigurationBuilder()
+            //                             .SetBasePath(Directory.GetCurrentDirectory())
+            //                             .AddJsonFile("appsettings.json", true, true)
+            //                             .Build();
+            // String adminEmail = config["AdminCredential:email"];
+            // String adminPassword = config["AdminCredential:password"];
+            return email.Equals("admin@estore.com") && password.Equals("admin@@");
         }
 
-        public MemberObject LoginMember(String email, String password)
+        public MemberViewModel LoginMember(String email, String password)
         {
             try
             {
                 var mem = MemberDAO.Instance.GetMemberLogin(email, password);
-                var member = mapper.Map<Member, MemberObject>(mem);
+                var member = mapper.Map<Member, MemberViewModel>(mem);
                 return member;
             }
             catch(Exception ex)
@@ -76,11 +70,11 @@ namespace DataAccess.Repositories
             }
         }
 
-        public void CreateMember(MemberObject memberObject)
+        public void CreateMember(MemberCreateModel createModel)
         {
             try
             {
-                var member = mapper.Map<MemberObject, Member>(memberObject);
+                var member = mapper.Map<MemberCreateModel, Member>(createModel);
                 MemberDAO.Instance.Create(member);
             }
             catch(Exception ex)
@@ -89,11 +83,12 @@ namespace DataAccess.Repositories
             }
         }
 
-        public void UpdateMember(MemberObject memberObject)
+        public void UpdateMember(int id, MemberCreateModel requestModel)
         {
             try
             {
-                var member = mapper.Map<MemberObject, Member>(memberObject);
+                var member = mapper.Map<MemberCreateModel, Member>(requestModel);
+                member.MemberId = id;
                 MemberDAO.Instance.Update(member);
             }
             catch (Exception ex)
@@ -101,12 +96,11 @@ namespace DataAccess.Repositories
                 throw new Exception(ex.Message);
             }
         }
-        public void DeleteMember(MemberObject memberObject)
+        public void DeleteMember(int id)
         {
             try
             {
-                var member = mapper.Map<MemberObject, Member>(memberObject);
-                MemberDAO.Instance.Delete(member);
+                MemberDAO.Instance.Delete(id);
             }
             catch (Exception ex)
             {

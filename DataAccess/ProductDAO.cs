@@ -183,7 +183,7 @@ namespace DataAccess
                 }
                 else
                 {
-                    throw new Exception("This product doesn't exist");
+                    throw new Exception("This product doesn't exist.");
                 }
             }
             catch (Exception ex)
@@ -192,20 +192,20 @@ namespace DataAccess
             }
         }
 
-        public void Delete(Product product)
+        public void Delete(int id)
         {
             try
             {
-                var prod = GetProductById(product.ProductId);
+                var prod = GetProductById(id);
                 if (prod != null)
                 {
                     var db = new FStoreDBContext();
-                    db.Products.Remove(product);
+                    db.Products.Remove(prod);
                     db.SaveChanges();
                 }
                 else
                 {
-                    throw new Exception("This product doesn't exist");
+                    throw new Exception("This product doesn't exist.");
                 }
             }
             catch (Exception ex)

@@ -132,7 +132,7 @@ namespace DataAccess
                 }
                 else
                 {
-                    throw new Exception("This order doesn't exist");
+                    throw new Exception("This order doesn't exist.");
                 }
             }
             catch (Exception ex)
@@ -141,11 +141,11 @@ namespace DataAccess
             }
         }
 
-        public void Delete(Order order)
+        public void Delete(int id)
         {
             try
             {
-                var ord = GetOrderById(order.OrderId);
+                var ord = GetOrderById(id);
                 if (ord != null)
                 {
                     var db = new FStoreDBContext();
@@ -154,7 +154,7 @@ namespace DataAccess
                 }
                 else
                 {
-                    throw new Exception("This order doesn't exist");
+                    throw new Exception("This order doesn't exist.");
                 }
             }
             catch (Exception ex)
