@@ -12,7 +12,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Business Layer", "2. Bus
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Data Layer", "3. Data Layer", "{95811255-D0E8-4BE4-996C-4C0C5A1C42D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesWPFApp", "SalesWPFApp\SalesWPFApp.csproj", "{52B19AE3-25BC-4B28-BF79-DF36DBC8282E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStoreClient", "eStoreClient\eStoreClient.csproj", "{52B19AE3-25BC-4B28-BF79-DF36DBC8282E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "TestConsole\TestConsole.csproj", "{289F80E5-2E76-48F8-8CC6-9BD80E9EC4A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +38,10 @@ Global
 		{52B19AE3-25BC-4B28-BF79-DF36DBC8282E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52B19AE3-25BC-4B28-BF79-DF36DBC8282E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52B19AE3-25BC-4B28-BF79-DF36DBC8282E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{289F80E5-2E76-48F8-8CC6-9BD80E9EC4A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{289F80E5-2E76-48F8-8CC6-9BD80E9EC4A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{289F80E5-2E76-48F8-8CC6-9BD80E9EC4A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{289F80E5-2E76-48F8-8CC6-9BD80E9EC4A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0A54074A-F335-45A1-8793-A335D61A693E} = {DBE7AB6D-A548-4FBA-A623-4CC298FEE847}
