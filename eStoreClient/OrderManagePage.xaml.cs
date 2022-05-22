@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -45,6 +46,11 @@ namespace SalesWPFApp
             try
             {
                 var response = await apiClient.GetAsync("order");
+                if (response.StatusCode == HttpStatusCode.InternalServerError)
+                {
+                    throw new Exception("Internal server error. Please retry.");
+                }
+
                 var dataString = await response.Content.ReadAsStringAsync();
                 var orders = JsonSerializer.Deserialize<IEnumerable<OrderViewModel>>(dataString, jsonOptions);
                 lvOrders.ItemsSource = orders;
@@ -63,6 +69,11 @@ namespace SalesWPFApp
             {
                 OrderViewModel order = (OrderViewModel)lvOrders.SelectedItem;
                 var response = await apiClient.DeleteAsync($"order/{order.OrderId}");
+                if (response.StatusCode == HttpStatusCode.InternalServerError)
+                {
+                    throw new Exception("Internal server error. Please retry.");
+                }
+
                 LoadOrderList();
             }
             catch (Exception ex)
@@ -99,12 +110,24 @@ namespace SalesWPFApp
                 return;
             }
 
-            DateTime start = (DateTime)dp_start.SelectedDate;
-            DateTime end = (DateTime)dp_end.SelectedDate;
-            var response = await apiClient.GetAsync($"order?startDate={start.ToString()}&endDate={end.ToString()}");
-            var dataString = await response.Content.ReadAsStringAsync();
-            var orders = JsonSerializer.Deserialize<IEnumerable<OrderViewModel>>(dataString, jsonOptions);
-            lvOrders.ItemsSource = orders;
+            try
+            {
+                DateTime start = (DateTime)dp_start.SelectedDate;
+                DateTime end = (DateTime)dp_end.SelectedDate;
+                var response = await apiClient.GetAsync($"order?startDate={start.ToString()}&endDate={end.ToString()}");
+                if (response.StatusCode == HttpStatusCode.InternalServerError)
+                {
+                    throw new Exception("Internal server error. Please retry.");
+                }
+
+                var dataString = await response.Content.ReadAsStringAsync();
+                var orders = JsonSerializer.Deserialize<IEnumerable<OrderViewModel>>(dataString, jsonOptions);
+                lvOrders.ItemsSource = orders;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Sorting Order");
+            }
         }
 
         private void lvOrders_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)

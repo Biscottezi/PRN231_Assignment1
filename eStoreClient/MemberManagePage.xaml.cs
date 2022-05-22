@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -45,6 +46,11 @@ namespace SalesWPFApp
             try
             {
                 var response = await apiClient.GetAsync("member");
+                if (response.StatusCode == HttpStatusCode.InternalServerError)
+                {
+                    throw new Exception("Internal server error. Please retry.");
+                }
+
                 var dataString = await response.Content.ReadAsStringAsync();
                 var members = JsonSerializer.Deserialize<IEnumerable<MemberViewModel>>(dataString, jsonOptions);
                 lvMembers.ItemsSource = members;
@@ -77,6 +83,11 @@ namespace SalesWPFApp
             {
                 MemberViewModel member = (MemberViewModel)lvMembers.SelectedItem;
                 var response = await apiClient.DeleteAsync($"member/{member.MemberId}");
+                if (response.StatusCode == HttpStatusCode.InternalServerError)
+                {
+                    throw new Exception("Internal server error. Please retry.");
+                }
+
                 LoadMemberList();
             }
             catch (Exception ex)

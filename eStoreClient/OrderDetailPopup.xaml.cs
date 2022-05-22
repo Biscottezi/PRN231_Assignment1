@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
@@ -75,6 +76,11 @@ namespace SalesWPFApp
                         UnitPrice = orderDetail.UnitPrice,
                     });
                     Close();
+                    if (response.StatusCode == HttpStatusCode.InternalServerError)
+                    {
+                        throw new Exception("Internal server error. Please retry.");
+                    }
+
                     MessageBox.Show("Order Detail created successfully", "Create Order Detail");
                 }
                 catch (Exception ex)

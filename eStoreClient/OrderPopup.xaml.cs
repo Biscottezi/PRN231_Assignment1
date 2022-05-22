@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
@@ -72,6 +73,11 @@ namespace SalesWPFApp
             try
             {
                 var response = await apiClient.GetAsync($"order-detail/{order.OrderId}/order");
+                if (response.StatusCode == HttpStatusCode.InternalServerError)
+                {
+                    throw new Exception("Internal server error. Please retry.");
+                }
+
                 var dataString = await response.Content.ReadAsStringAsync();
                 var orderDetails =
                     JsonSerializer.Deserialize<IEnumerable<OrderDetailViewModel>>(dataString, jsonOptions);
@@ -118,12 +124,18 @@ namespace SalesWPFApp
                     {
                         var response = await apiClient.PutAsJsonAsync($"order/{order.OrderId}", new OrderCreateModel()
                         {
+                            OrderId = order.OrderId,
                             MemberId = order.MemberId,
                             Freight = order.Freight,
                             OrderDate = order.OrderDate,
                             RequiredDate = order.RequiredDate,
                             ShippedDate = order.ShippedDate,
                         });
+                        if (response.StatusCode == HttpStatusCode.InternalServerError)
+                        {
+                            throw new Exception("Internal server error. Please retry.");
+                        }
+
                         Close();
                         MessageBox.Show("Information updated successfully", "Update Order");
                     }
@@ -131,12 +143,18 @@ namespace SalesWPFApp
                     {
                         var response = await apiClient.PostAsJsonAsync($"order", new OrderCreateModel()
                         {
+                            OrderId = order.OrderId,
                             MemberId = order.MemberId,
                             Freight = order.Freight,
                             OrderDate = order.OrderDate,
                             RequiredDate = order.RequiredDate,
                             ShippedDate = order.ShippedDate,
                         });
+                        if (response.StatusCode == HttpStatusCode.InternalServerError)
+                        {
+                            throw new Exception("Internal server error. Please retry.");
+                        }
+
                         Close();
                         MessageBox.Show("Order created successfully", "Create Order");
                     }
@@ -167,6 +185,11 @@ namespace SalesWPFApp
                 var response =
                     await apiClient.DeleteAsync(
                         $"order-detail?orderId={orderDetail.OrderId}&productId={orderDetail.ProductId}");
+                if (response.StatusCode == HttpStatusCode.InternalServerError)
+                {
+                    throw new Exception("Internal server error. Please retry.");
+                }
+
                 LoadOrderDetail();
             }
             catch (Exception ex)

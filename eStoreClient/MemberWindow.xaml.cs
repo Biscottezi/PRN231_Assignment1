@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -50,11 +51,23 @@ namespace SalesWPFApp
         {
             MemberPopup memberPopup = new MemberPopup(this.member, apiClient, true);
             _ = memberPopup.ShowDialog();
-            var response = await apiClient.GetAsync($"member/{this.member.MemberId}");
-            var dataString = await response.Content.ReadAsStringAsync();
-            var member = JsonSerializer.Deserialize<MemberViewModel>(dataString, jsonOption);
-            this.member = member;
-            MapMemberInfo(member);
+            try
+            {
+                var response = await apiClient.GetAsync($"member/{this.member.MemberId}");
+                if (response.StatusCode == HttpStatusCode.InternalServerError)
+                {
+                    throw new Exception("Internal server error. Please retry.");
+                }
+
+                var dataString = await response.Content.ReadAsStringAsync();
+                var member = JsonSerializer.Deserialize<MemberViewModel>(dataString, jsonOption);
+                this.member = member;
+                MapMemberInfo(member);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Updating member");
+            }
         }
 
         private async void MapMemberInfo(MemberViewModel MemberViewModel)
@@ -65,10 +78,22 @@ namespace SalesWPFApp
             lbCompany.Content = MemberViewModel.CompanyName;
             lbCity.Content = MemberViewModel.City;
             lbCountry.Content = MemberViewModel.Country;
-            var response = await apiClient.GetAsync($"order/{MemberViewModel.MemberId}/member");
-            var dataString = await response.Content.ReadAsStringAsync();
-            var data = JsonSerializer.Deserialize<IEnumerable<OrderViewModel>>(dataString, jsonOption);
-            lvOrderHistory.ItemsSource = data;
+            try
+            {
+                var response = await apiClient.GetAsync($"order/{MemberViewModel.MemberId}/member");
+                var dataString = await response.Content.ReadAsStringAsync();
+                var data = JsonSerializer.Deserialize<IEnumerable<OrderViewModel>>(dataString, jsonOption);
+                if (response.StatusCode == HttpStatusCode.InternalServerError)
+                {
+                    throw new Exception("Internal server error. Please retry.");
+                }
+
+                lvOrderHistory.ItemsSource = data;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Loading member's orders");
+            }
         }
     }
 }

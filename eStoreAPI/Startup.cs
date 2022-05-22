@@ -59,6 +59,7 @@ namespace eStoreAPI
             services.AddSingleton(typeof(IProductRepository), typeof(ProductRepository));
             services.AddSingleton(typeof(IOrderRepository), typeof(OrderRepository));
             services.AddSingleton(typeof(IOrderDetailRepository), typeof(OrderDetailRepository));
+            services.AddSingleton(typeof(ICategoryRepository), typeof(CategoryRepository));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

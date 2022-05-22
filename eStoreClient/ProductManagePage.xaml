@@ -52,7 +52,7 @@
                     <GridViewColumn Header="Product ID" Width="100"
                                     DisplayMemberBinding="{Binding Path=ProductId}" />
                     <GridViewColumn Header="Category ID" Width="100"
-                                    DisplayMemberBinding="{Binding Path=CategoryId}" />
+                                    DisplayMemberBinding="{Binding Path=CategoryName}" />
                     <GridViewColumn Header="Product Name" Width="200"
                                     DisplayMemberBinding="{Binding Path=ProductName}" />
                     <GridViewColumn Header="Weight" Width="100"

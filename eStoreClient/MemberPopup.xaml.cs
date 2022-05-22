@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
@@ -82,12 +83,18 @@ namespace SalesWPFApp
                         var response = await apiClient.PutAsJsonAsync($"member/{member.MemberId}",
                             new MemberCreateModel()
                             {
+                                MemberId = member.MemberId,
                                 Email = member.Email,
                                 Password = member.Password,
                                 City = member.City,
                                 Country = member.Country,
                                 CompanyName = member.CompanyName,
                             });
+                        if (response.StatusCode == HttpStatusCode.InternalServerError)
+                        {
+                            throw new Exception("Internal server error. Please retry.");
+                        }
+
                         Close();
                         MessageBox.Show("Information updated successfully", "Update member");
                     }
@@ -95,12 +102,18 @@ namespace SalesWPFApp
                     {
                         var response = await apiClient.PostAsJsonAsync($"member", new MemberCreateModel()
                         {
+                            MemberId = member.MemberId,
                             Email = member.Email,
                             Password = member.Password,
                             City = member.City,
                             Country = member.Country,
                             CompanyName = member.CompanyName,
                         });
+                        if (response.StatusCode == HttpStatusCode.InternalServerError)
+                        {
+                            throw new Exception("Internal server error. Please retry.");
+                        }
+
                         Close();
                         MessageBox.Show("Member created successfully", "Create member");
                     }

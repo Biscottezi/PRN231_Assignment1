@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,26 +26,41 @@ namespace SalesWPFApp
     /// </summary>
     public partial class ProductPopup : Window
     {
-        private HttpClient apiClient;
-        private bool isUpdate;
+        private readonly HttpClient apiClient;
+        private readonly bool isUpdate;
+        private List<CategoryViewModel> categories;
 
-        public ProductPopup(ProductViewModel ProductViewModel, HttpClient apiClient, bool isUpdate)
+        private readonly JsonSerializerOptions jsonOptions = new()
+        {
+            PropertyNameCaseInsensitive = true,
+        };
+
+        public ProductPopup(ProductViewModel product, HttpClient apiClient, bool isUpdate)
         {
             InitializeComponent();
             this.apiClient = apiClient;
             this.isUpdate = isUpdate;
-            if (ProductViewModel != null)
-            {
-                txtProductId.Text = ProductViewModel.ProductId.ToString();
-                txtCategoryId.Text = ProductViewModel.CategoryId.ToString();
-                txtName.Text = ProductViewModel.ProductName;
-                txtWeight.Text = ProductViewModel.Weight;
-                txtPrice.Text = ProductViewModel.UnitPrice.ToString();
-                txtStock.Text = ProductViewModel.UnitsInStock.ToString();
-            }
-
             btnAction.Content = isUpdate ? "Update" : "Insert";
             txtProductId.IsReadOnly = isUpdate;
+            GetCategories(product);
+        }
+
+        private async void GetCategories(ProductViewModel product)
+        {
+            var response = await apiClient.GetAsync("category");
+            var dataString = await response.Content.ReadAsStringAsync();
+            var categories = JsonSerializer.Deserialize<IEnumerable<CategoryViewModel>>(dataString, jsonOptions);
+            cbCategoryId.ItemsSource = categories;
+            cbCategoryId.DisplayMemberPath = "CategoryName";
+            if (product != null)
+            {
+                txtProductId.Text = product.ProductId.ToString();
+                txtName.Text = product.ProductName;
+                txtWeight.Text = product.Weight;
+                txtPrice.Text = product.UnitPrice.ToString();
+                txtStock.Text = product.UnitsInStock.ToString();
+                cbCategoryId.SelectedItem = categories.Single(c => c.CategoryId == product.CategoryId);
+            }
         }
 
         private ProductViewModel GetProduct()
@@ -54,7 +71,7 @@ namespace SalesWPFApp
                 product = new ProductViewModel
                 {
                     ProductId = int.Parse(txtProductId.Text),
-                    CategoryId = int.Parse(txtCategoryId.Text),
+                    CategoryId = (cbCategoryId.SelectionBoxItem as CategoryViewModel).CategoryId,
                     ProductName = txtName.Text,
                     Weight = txtWeight.Text,
                     UnitPrice = decimal.Parse(txtPrice.Text),
@@ -81,12 +98,18 @@ namespace SalesWPFApp
                         var response = await apiClient.PutAsJsonAsync($"product/{product.ProductId}",
                             new ProductCreateModel()
                             {
+                                ProductId = product.ProductId,
                                 ProductName = product.ProductName,
                                 Weight = product.Weight,
                                 CategoryId = product.CategoryId,
                                 UnitPrice = product.UnitPrice,
                                 UnitsInStock = product.UnitsInStock,
                             });
+                        if (response.StatusCode == HttpStatusCode.InternalServerError)
+                        {
+                            throw new Exception("Internal server error. Please retry.");
+                        }
+
                         Close();
                         MessageBox.Show("Information updated successfully", "Update Product");
                     }
@@ -94,12 +117,18 @@ namespace SalesWPFApp
                     {
                         var response = await apiClient.PostAsJsonAsync("product", new ProductCreateModel()
                         {
+                            ProductId = product.ProductId,
                             ProductName = product.ProductName,
                             Weight = product.Weight,
                             CategoryId = product.CategoryId,
                             UnitPrice = product.UnitPrice,
                             UnitsInStock = product.UnitsInStock,
                         });
+                        if (response.StatusCode == HttpStatusCode.InternalServerError)
+                        {
+                            throw new Exception("Internal server error. Please retry.");
+                        }
+
                         Close();
                         MessageBox.Show("Product created successfully", "Create Product");
                     }

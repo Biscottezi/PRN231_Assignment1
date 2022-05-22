@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -45,6 +46,11 @@ namespace SalesWPFApp
             try
             {
                 var response = await apiClient.GetAsync("product");
+                if (response.StatusCode == HttpStatusCode.InternalServerError)
+                {
+                    throw new Exception("Internal server error. Please retry.");
+                }
+
                 var dataString = await response.Content.ReadAsStringAsync();
                 var products = JsonSerializer.Deserialize<IEnumerable<ProductViewModel>>(dataString, jsonOptions);
                 lvProducts.ItemsSource = products;
@@ -62,6 +68,11 @@ namespace SalesWPFApp
             {
                 ProductViewModel product = (ProductViewModel)lvProducts.SelectedItem;
                 var response = await apiClient.DeleteAsync($"product/{product.ProductId}");
+                if (response.StatusCode == HttpStatusCode.InternalServerError)
+                {
+                    throw new Exception("Internal server error. Please retry.");
+                }
+
                 LoadProductList();
             }
             catch (Exception ex)
@@ -87,6 +98,11 @@ namespace SalesWPFApp
             }
 
             var response = await apiClient.GetAsync($"product?ProductName={keyword}&UnitPrice={price}");
+            if (response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                throw new Exception("Internal server error. Please retry.");
+            }
+
             var dataString = await response.Content.ReadAsStringAsync();
             var products = JsonSerializer.Deserialize<IEnumerable<ProductViewModel>>(dataString, jsonOptions);
             lvProducts.ItemsSource = products;

@@ -4,6 +4,7 @@ namespace BusinessLogic.RequestModel
 {
     public class OrderCreateModel
     {
+        public int OrderId { get; set; }
         public int MemberId { get; set; }
         public DateTime OrderDate { get; set; }
         public DateTime RequiredDate { get; set; }
