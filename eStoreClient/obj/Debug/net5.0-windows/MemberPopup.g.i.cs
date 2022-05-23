@@ -165,7 +165,7 @@ namespace SalesWPFApp {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/SalesWPFApp;V1.0.0.0;component/memberpopup.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/eStoreClient;V1.0.0.0;component/memberpopup.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\MemberPopup.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

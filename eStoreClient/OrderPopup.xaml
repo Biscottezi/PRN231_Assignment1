@@ -44,27 +44,18 @@
                         Margin="0,10,0,0" Width="340">
                 <Label Name="lbOrderDate"
                        Content="Order Date: "/>
-                <TextBox Name="txtOrderDate"
-                         Width="180"
-                         Margin="38,0,0,0"/>
             </StackPanel>
             <StackPanel
                         Orientation="Horizontal"
                         Margin="0,10,0,0" Width="340">
                 <Label Name="lbRequiredDate"
                        Content="Required Date: "/>
-                <TextBox Name="txtRequiredDate"
-                         Width="180"
-                         Margin="21,0,0,0"/>
             </StackPanel>
             <StackPanel
                         Orientation="Horizontal"
                         Margin="0,10,0,0" Width="340">
                 <Label Name="lbShippedDate"
                        Content="Shipped Date: "/>
-                <TextBox Name="txtShippedDate"
-                         Width="180"
-                         Margin="25,0,0,0"/>
             </StackPanel>
             <StackPanel
                         Orientation="Horizontal"
@@ -72,7 +63,7 @@
                 <Label Name="lbFreight"
                        Content="Freight: "/>
                 <TextBox Name="txtFreight"
-                         Width="180"
+                         Width="181"
                          Margin="60,0,0,0"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal"
@@ -114,5 +105,8 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <DatePicker x:Name="dtpOrderDate" HorizontalAlignment="Left" Margin="266,139,0,0" VerticalAlignment="Top" Width="181"/>
+        <DatePicker x:Name="dtpRequiredDate" HorizontalAlignment="Left" Margin="266,177,0,0" VerticalAlignment="Top" Width="181"/>
+        <DatePicker x:Name="dtpShippedDate" HorizontalAlignment="Left" Margin="266,212,0,0" VerticalAlignment="Top" Width="181"/>
     </Grid>
 </Window>

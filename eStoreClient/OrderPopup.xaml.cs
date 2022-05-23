@@ -58,9 +58,12 @@ namespace SalesWPFApp
             {
                 txtOrderId.Text = order.OrderId.ToString();
                 txtMemberId.Text = order.MemberId.ToString();
-                txtOrderDate.Text = order.OrderDate.ToString();
-                txtRequiredDate.Text = order.RequiredDate.ToString();
-                txtShippedDate.Text = order.ShippedDate.ToString();
+                dtpOrderDate.SelectedDate = order.OrderDate;
+                dtpRequiredDate.SelectedDate = order.RequiredDate;
+                dtpShippedDate.SelectedDate = order.ShippedDate;
+                //txtOrderDate.Text = order.OrderDate.ToString();
+                //txtRequiredDate.Text = order.RequiredDate.ToString();
+                //txtShippedDate.Text = order.ShippedDate.ToString();
                 txtFreight.Text = order.Freight.ToString();
             }
 
@@ -95,13 +98,19 @@ namespace SalesWPFApp
             OrderViewModel order = null;
             try
             {
+                if (dtpOrderDate.SelectedDate == null || dtpRequiredDate.SelectedDate == null ||
+                    dtpShippedDate.SelectedDate == null)
+                {
+                    throw new Exception("PLease fill in all the date");
+                }
+
                 order = new OrderViewModel()
                 {
                     OrderId = int.Parse(txtOrderId.Text),
                     MemberId = int.Parse(txtMemberId.Text),
-                    OrderDate = DateTime.Parse(txtOrderDate.Text),
-                    RequiredDate = DateTime.Parse(txtRequiredDate.Text),
-                    ShippedDate = DateTime.Parse(txtShippedDate.Text),
+                    OrderDate = (DateTime)dtpOrderDate.SelectedDate,
+                    RequiredDate = (DateTime)dtpRequiredDate.SelectedDate,
+                    ShippedDate = (DateTime)dtpShippedDate.SelectedDate,
                     Freight = decimal.Parse(txtFreight.Text),
                 };
             }

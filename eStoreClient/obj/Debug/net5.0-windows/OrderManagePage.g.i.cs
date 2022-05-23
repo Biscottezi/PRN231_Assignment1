@@ -117,7 +117,7 @@ namespace SalesWPFApp {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/SalesWPFApp;V1.0.0.0;component/ordermanagepage.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/eStoreClient;V1.0.0.0;component/ordermanagepage.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\OrderManagePage.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
